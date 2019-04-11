@@ -2,14 +2,19 @@ require("dotenv").config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const { api } = require("./api");
+const expressValidator = require("express-validator");
+const passport = require("passport");
+const { routes } = require("./routes");
+require("./handlers/passport");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(expressValidator());
+app.use(passport.initialize());
 
-app.use("/api", api);
+app.use("/", routes);
 
 app.get("/*", (_, res) => {
   res.send("no api route matched, send the react app");
