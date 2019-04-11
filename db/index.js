@@ -13,11 +13,20 @@ const knex = require("knex")(dbConfig);
 
 const getUserById = async id => {
   try {
-    const res = await knex
-      .select("*")
-      .from("users")
+    const res = await knex("users")
       .where({ id: id })
-      .then(res => res);
+      .then(res => res[0]);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getUserByEmail = async email => {
+  try {
+    const res = await knex("users")
+      .where({ email: email })
+      .then(res => res[0]);
     return res;
   } catch (err) {
     throw err;
@@ -38,5 +47,6 @@ const addUser = async ({ id, email, password }) => {
 
 module.exports = {
   getUserById,
+  getUserByEmail,
   addUser
 };
