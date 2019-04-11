@@ -11,7 +11,7 @@ const dbConfig = {
 
 const knex = require("knex")(dbConfig);
 
-const getUserById = async id => {
+module.exports.getUserById = async id => {
   try {
     const res = await knex("users")
       .where({ id: id })
@@ -22,7 +22,7 @@ const getUserById = async id => {
   }
 };
 
-const getUserByEmail = async email => {
+module.exports.getUserByEmail = async email => {
   try {
     const res = await knex("users")
       .where({ email: email })
@@ -33,10 +33,10 @@ const getUserByEmail = async email => {
   }
 };
 
-const addUser = async ({ id, email, password }) => {
+module.exports.addUser = async data => {
   try {
     const res = await knex("users")
-      .insert({ id, email, password })
+      .insert(data)
       .returning("*")
       .then(res => res);
     return res;
@@ -45,8 +45,61 @@ const addUser = async ({ id, email, password }) => {
   }
 };
 
-module.exports = {
-  getUserById,
-  getUserByEmail,
-  addUser
+module.exports.updateUser = async (id, data) => {
+  try {
+    const res = await knex("users")
+      .where({ id: id })
+      .update(data)
+      .then(res => res[0]);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports.addList = async data => {
+  try {
+    const res = await knex("lists")
+      .insert(data)
+      .returning("*")
+      .then(res => res[0]);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports.getListById = async id => {
+  try {
+    const res = await knex("lists")
+      .where({ id: id })
+      .then(res => res[0]);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports.updateList = async (id, data) => {
+  try {
+    const res = await knex("lists")
+      .where({ id: id })
+      .update(data)
+      .then(res => res[0]);
+    return res;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports.deleteList = async id => {
+  try {
+    const res = await knex("lists")
+      .where({ id: id })
+      .del()
+      .then(res => res);
+    return res;
+  } catch (err) {
+    throw err;
+  }
 };

@@ -1,9 +1,9 @@
 const { Router } = require("express");
-const { users } = require("./users");
 const { auth } = require("./auth");
+const { lists } = require("./lists");
 
 const router = Router();
-router.use(users);
 router.use(auth);
+router.use(lists);
 
 module.exports = { api: router };

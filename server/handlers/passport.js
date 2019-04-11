@@ -8,7 +8,7 @@ passport.use(
       usernameField: "email",
       passwordField: "password"
     },
-    async (email, password, done) => {
+    async (email, _, done) => {
       const user = await getUserByEmail(email);
       if (!user) {
         return done(null, false);
@@ -20,9 +20,9 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(async (id, done) => {
-  done(null, user.id);
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
